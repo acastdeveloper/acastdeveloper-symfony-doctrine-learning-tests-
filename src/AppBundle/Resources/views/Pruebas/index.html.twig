@@ -1,0 +1,54 @@
+{% extends "::layout.html.twig" %}
+{% block container %}
+  {{texto}}
+  <hr>
+  {{fruta.manzana}}
+  <hr>
+
+    {% if fruta.pera!="rica" %}
+      Si la pera es rica que muestre {{fruta.manzana}}
+    {% endif %}
+
+    {# Esto es un comentario de twig #}
+
+
+    {% set fecha = date("-2 days", "Europe/Madrid") %}
+    {{ dump(fecha) }}
+  <hr>
+    {{fecha.date|date('d-m-Y')}}
+  <hr>
+
+  {{include('AppBundle:Pruebas:partial.html.twig')}}
+
+  <hr>
+
+  {{ max([1,9,8,5,6,5,4,5,8,9,5,6,2,100]) }}
+
+  <hr>
+
+  {{ random(["Batman","Los juegos del hambre", "Terminator", "Rocinante"])}}
+
+  <hr>
+  {{parent()}}
+  <hr>
+  {% set variable = "Variable dentro de twig" %}
+  {{ variable }}
+  <hr>
+
+  {% for i in range(0,10,3) %}
+  {{i}} <br>
+
+  {% endfor %}
+
+
+
+<hr>
+  {% if productos|length>0 %}
+  {% for matriz in productos %}
+    {{ matriz.producto }} - {{ matriz.precio }}<br>
+  {% endfor %}
+  {% endif %}
+  <hr>
+  {{generateTable(5,5)|raw}}
+
+{% endblock %}

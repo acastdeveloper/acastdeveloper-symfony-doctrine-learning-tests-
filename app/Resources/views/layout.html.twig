@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}LAYOUT!{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <style media="screen">
+          .container {
+            border: 1px solid red;
+            width: 580px;
+          }
+           
+            .table, .table td {
+                border: 1px solid black;
+                border-collapse: collapse;
+                padding: 15px;
+            } 
+
+
+        </style>
+    </head>
+    <body>
+    <div class="container">
+      {% block container %}
+        contenido por defecto de container
+      {% endblock %}
+    </div>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>
