@@ -66,7 +66,7 @@ class PruebasController extends Controller
 
     }
 
-q
+
     public function readAction() {
 
       $em =$this->getDoctrine()->getManager();
@@ -265,6 +265,25 @@ q
               ->setParameter("precio","79")
               ->getQuery();
       $cursos = $query->getResult();
+
+      foreach ($cursos as $curso) {
+        echo $curso->getTitulo()."<br>";
+      }
+      die();
+
+
+
+    }
+
+
+    public function queryCustomAction() {
+      $em =$this->getDoctrine()->getEntityManager();
+      //Obre el gestor d'entitats
+      $cursos_repo = $em->getRepository("AppBundle:Curso");
+      //Accedeix al repositori/taula Curso.
+
+      
+      $cursos = $cursos_repo->getCursos();
 
       foreach ($cursos as $curso) {
         echo $curso->getTitulo()."<br>";
