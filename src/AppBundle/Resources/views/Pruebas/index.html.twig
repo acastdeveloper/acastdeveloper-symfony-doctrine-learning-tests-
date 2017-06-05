@@ -6,7 +6,7 @@
   <hr>
 
     {% if fruta.pera!="rica" %}
-      Si la pera es rica que muestre {{fruta.manzana}}
+      Si la pera es rica que muestre {{fruta.manzana}} 
     {% endif %}
 
     {# Esto es un comentario de twig #}
@@ -15,7 +15,8 @@
     {% set fecha = date("-2 days", "Europe/Madrid") %}
     {{ dump(fecha) }}
   <hr>
-    {{fecha.date|date('d-m-Y')}}
+    {{fecha.date|date('d-m-Y
+    ')}}
   <hr>
 
   {{include('AppBundle:Pruebas:partial.html.twig')}}

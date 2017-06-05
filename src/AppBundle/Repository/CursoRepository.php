@@ -10,4 +10,10 @@ namespace AppBundle\Repository;
  */
 class CursoRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function getCursos() {
+		$em =$this->getDoctrine()->getManager();
+		
+
+	}
+
 }
