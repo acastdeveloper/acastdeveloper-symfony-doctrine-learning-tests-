@@ -6,8 +6,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-//Per tal què faci servir l'entitat Curso, de doctrine, posem
+//Per tal què faci servir l'entitat Curso, de doctrine, posem:
 use AppBundle\Entity\Curso;
+//per tal que puguem utilitzar les definicions de formulari, posem:
+use AppBundle\Form\CursoType;
 
 class PruebasController extends Controller
 {
@@ -37,9 +39,9 @@ class PruebasController extends Controller
     public function createAction()
     {
         // Aquesta és l'acció d'inserir dades a la base de dades.
-        // Per poder fer aquesta acció, abans hem: 
+        // Per poder fer aquesta acció, abans hem:
         // 1) Creat l'entitat curso. En aquest cas ho hem fet mitjançant l'ordre
-        
+
           $curso = new Curso();
           // També podríem haver fet servir "$curso = new AppBundle\Entity\Curso();"
           // però no cal perquè més amunt hem fet servir "use AppBundle\Entity\Curso;"
@@ -56,7 +58,7 @@ class PruebasController extends Controller
           //Li fica l'objecte "curso" amb les propietats al gestor
           $flush=$em->flush();
           //Li aboca les propietats
-          
+
       if($flush !=null)  {
         echo "El registro del curso no se ha creado bien";
       } else {
@@ -73,11 +75,11 @@ class PruebasController extends Controller
       //Per gestionar les nostres entitats obrim el getEntityManager o getManager.
 
       $cursos_repo =$em->getRepository("AppBundle:Curso");
-      //El repositori és l'objecte que ens permet seleccionar concretament amb quina "entitat" 
+      //El repositori és l'objecte que ens permet seleccionar concretament amb quina "entitat"
       //treballarem. Aquesta entitat és representant d'una taula a la base de dades.
 
       $cursos = $cursos_repo->findAll();
-      //$cursos és un array, d'objectes, format per tots els registres de la taula cursos, perquè 
+      //$cursos és un array, d'objectes, format per tots els registres de la taula cursos, perquè
       //ha fet servir el mètode findAll(). Hi ha altres "find", com find(), findBy(), findOneBy() ,
       //Obteniendo Datos
       //Para obtener datos de las tablas tenemos varios métodos realmente mágicos:
@@ -121,7 +123,7 @@ class PruebasController extends Controller
 
 
     public function updateAction($id, $titulo, $descripcion, $precio) {
-      //En aquesta funció li passarem els paràmetres: 
+      //En aquesta funció li passarem els paràmetres:
       //$id, $titulo, $descripcion, $precio
 
       $em =$this->getDoctrine()->getEntityManager();
@@ -130,7 +132,7 @@ class PruebasController extends Controller
       //Selecciona el repositori amb qui treballarà
 
       $curso = $cursos_repo->find($id);
-      //$curso és un objecte(registre) concret per aquella $id concreta i única 
+      //$curso és un objecte(registre) concret per aquella $id concreta i única
 
       $curso->setTitulo($titulo);
       $curso->setDescripcion($descripcion);
@@ -162,7 +164,7 @@ class PruebasController extends Controller
       //Escull el repositori(la taula) amb la que treballarem
 
       $curso = $cursos_repo->find($id);
-      //$curso és l'objecte(registre) del repositori(la taula) 
+      //$curso és l'objecte(registre) del repositori(la taula)
       //concret amb la $id que li hem passat
       $em->remove($curso);
       //Li diem al gestor d'entitats que esborri aquest objecte del repositori
@@ -195,7 +197,7 @@ class PruebasController extends Controller
       $stmt = $db->prepare($query);
       //Prepara la consulta $stmt
       $params = array();
-      //Inicialitza una matriu $params 
+      //Inicialitza una matriu $params
 
       $stmt->execute($params);
       //Executa la consulta $stmt
@@ -205,9 +207,9 @@ class PruebasController extends Controller
       //en comptes d'un array d'objectes
 
       foreach ($cursos as $curso) {
-       //Amb foreach itera aquest array d'arrays 
+       //Amb foreach itera aquest array d'arrays
         echo $curso["titulo"];
-        //Al ser un array d'arrays per extreure el valor no fa servir 
+        //Al ser un array d'arrays per extreure el valor no fa servir
         //la fletxa "->" si no els indexos ["titulo"]
         echo "-";
         echo $curso["descripcion"];
@@ -222,7 +224,7 @@ class PruebasController extends Controller
 
 
     public function dqlAction() {
-      //EXEMPLE DE FUNCIÓ AMB EL DIALECTE 
+      //EXEMPLE DE FUNCIÓ AMB EL DIALECTE
       //DE SQL PROPI DE DOCTRINE, EL DQL
       $em =$this->getDoctrine()->getEntityManager();
       //Obre el gestor d'entitats
@@ -230,7 +232,7 @@ class PruebasController extends Controller
               SELECT c FROM AppBundle:Curso c
               /* Observacions:
               1) No està adreçant-se a la taula de la bbdd si no al repositori.
-              2) Crec que en DQL no posa asterisc * darrera del select sino c, 
+              2) Crec que en DQL no posa asterisc * darrera del select sino c,
                   perquè és alies que posa a entitat Curso
                */
               WHERE c.precio > :precio
@@ -239,10 +241,10 @@ class PruebasController extends Controller
       //Defineix la consulta amb un mètode de Doctrine anomenat
       //createQuery()
       $cursos = $query->getResult();
-      //$cursos és la matriu d'objectes obtinguda amb el mètode getResult, 
-      //crec que de DQL, que obté els resultats de la consulta en forma 
+      //$cursos és la matriu d'objectes obtinguda amb el mètode getResult,
+      //crec que de DQL, que obté els resultats de la consulta en forma
       //de matriu d'objectes
-      
+
       foreach ($cursos as $curso) {
       //Itera la matriu d'objectes(registres) $cursos i a cada ítem l'anomena $curso
         echo $curso->getTitulo()."<br>";
@@ -252,7 +254,7 @@ class PruebasController extends Controller
     }
 
 
-    
+
 
     public function queryBuilderAction() {
       $em =$this->getDoctrine()->getEntityManager();
@@ -282,22 +284,35 @@ class PruebasController extends Controller
       $cursos_repo = $em->getRepository("AppBundle:Curso");
       //Accedeix al repositori/taula Curso.
 
-      
+
       $cursos = $cursos_repo->getCursos();
 
       foreach ($cursos as $curso) {
         echo $curso->getTitulo()."<br>";
       }
       die();
+    }
 
 
+
+    public function formAction() {
+
+      $curso = new Curso();
+      $form =$this->createForm(CursoType::class,$curso);
+
+      return $this->render('AppBundle:Pruebas:form.html.twig', array(
+        'form1' => $form->createView()
+      ));
 
     }
 
 
 
 
-} 
+
+
+
+}
 
 
 
@@ -307,4 +322,4 @@ class PruebasController extends Controller
 
 
 
-?> 
+?>

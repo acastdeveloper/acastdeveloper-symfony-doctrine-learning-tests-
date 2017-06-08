@@ -23,18 +23,22 @@ pruebas_delete:
   path: /pruebas/delete/{id}
   defaults: { _controller: AppBundle:Pruebas:delete }
 
-pruebas_native: 
+pruebas_native:
   path: /pruebas/native
   defaults: { _controller: AppBundle:Pruebas:nativeSql }
 
-pruebas_dql: 
+pruebas_dql:
   path: /pruebas/dql
   defaults: { _controller: AppBundle:Pruebas:dql }
 
-pruebas_query_builder: 
+pruebas_query_builder:
   path: /pruebas/query-builder
   defaults: { _controller: AppBundle:Pruebas:queryBuilder }
 
-pruebas_query_customized: 
+pruebas_query_customized:
   path: /pruebas/query-custom
   defaults: { _controller: AppBundle:Pruebas:queryCustom }
+
+pruebas_form:
+    path: /pruebas/form
+    defaults: { _controller: AppBundle:Pruebas:form }
