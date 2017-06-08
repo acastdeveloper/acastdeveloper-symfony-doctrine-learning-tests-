@@ -295,14 +295,40 @@ class PruebasController extends Controller
 
 
 
-    public function formAction() {
+    public function formAction(Request $request) {
 
-      $curso = new Curso();
-      $form =$this->createForm(CursoType::class,$curso);
+        $curso = new Curso();
+        $form =$this->createForm(CursoType::class,$curso);
 
-      return $this->render('AppBundle:Pruebas:form.html.twig', array(
-        'form1' => $form->createView()
-      ));
+        $form->handleRequest($request);
+        //Això ho posem per “bindejar”, o sigui lligar
+        //els paràmetres que rebi per l’objecte “Request”
+        //i així poder accedir en aquelles dades.
+        //AIXÒ ÉS EQUIVALENT A FER EL PREPARE DE PDO
+
+ 
+
+        if($form->isValid()){
+            $status ="Formulario válido"; //Flag per saber com va la val·lidació
+            $data = array(
+                "titulo"=> $form->get("titulo")->getData(),
+                "descripcion"=> $form->get("descripcion")->getData(),
+                "precio"=> $form->get("precio")->getData()
+                //Això és l'equivalent al bindParams que feiem en PDO amb
+                //l'objecte PreparedStatements
+            );
+        } else {
+            $status = null;
+            $data = null;
+        }
+
+
+
+        return $this->render('AppBundle:Pruebas:form.html.twig', array(
+        'form1' => $form->createView(),
+        'status' =>$status,
+        'data' => $data
+        ));
 
     }
 
