@@ -1,9 +1,10 @@
 <h2>Formulario con Symfony 3</h2>
-{{form_start(form1,{'action':'','method':'POST'})}}
 {% if (status != null) and (data != null) %}
   <h3>{{status}}</h3>
   {{ dump(data) }}
 {% endif %}
+
+{{form_start(form1,{'action':'','method':'POST'})}}
   {{form_errors(form1.titulo)}}
   {{form_widget(form1.titulo)}}
- {{form_end(form1)}}
+{{form_end(form1)}}

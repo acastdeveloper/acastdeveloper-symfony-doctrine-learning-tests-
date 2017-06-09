@@ -11,6 +11,11 @@ use AppBundle\Entity\Curso;
 //per tal que puguem utilitzar les definicions de formulari, posem:
 use AppBundle\Form\CursoType;
 
+use Symfony\Component\Validator\Constraints as Assert;
+//Carreguem aquestes classes per poder instanaciar objectes d'aquesta classe per poder fer validacions aïllades de dades.
+// I li posem as Assert, perquè sigui més curt referir-nos a ell, dins del controlador
+
+
 class PruebasController extends Controller
 {
     public function indexAction(Request $request, $name, $page)
@@ -300,13 +305,14 @@ class PruebasController extends Controller
         $curso = new Curso();
         $form =$this->createForm(CursoType::class,$curso);
 
+
+      //RECOLLIDA DE DADES DE FORMULARI (Requerirà l'objecte Request que caldrà
+      //també incloure'l a les llibreries més amunt)
         $form->handleRequest($request);
         //Això ho posem per “bindejar”, o sigui lligar
         //els paràmetres que rebi per l’objecte “Request”
         //i així poder accedir en aquelles dades.
         //AIXÒ ÉS EQUIVALENT A FER EL PREPARE DE PDO
-
- 
 
         if($form->isValid()){
             $status ="Formulario válido"; //Flag per saber com va la val·lidació
@@ -329,6 +335,30 @@ class PruebasController extends Controller
         'status' =>$status,
         'data' => $data
         ));
+
+    }
+
+    public function validarEmailAction($email) {
+
+        $emailConstraint = new Assert\Email();
+        $emailConstraint->message = "Pásame un buen correo";
+
+
+        // $emailConstraint = new Assert\Email();
+        // $emailConstraint->message = "Pasame un buen correo";
+
+
+        $error =$this->get("validator")->validate(
+            $email,
+            $emailConstraint
+            );
+        if(count($error)==0) {
+            echo "<h1>Correo válido</h1>";
+        } else {
+            echo $error[0]->getMessage();
+        }
+        die();
+
 
     }
 
